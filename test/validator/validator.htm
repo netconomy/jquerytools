@@ -30,7 +30,9 @@ div.error {
 								/>
 	</p>
 	<p>
+    <!--
 		date <input type="date" title="Use format yyyy-mm-dd" name="day" min="-40" required="true" />
+        -->
 	</p>
 	
 	<p>
@@ -39,7 +41,17 @@ div.error {
 					requires="day, abc" 
 					oninvalid="console.info('jou')" />
 	</p>
-	
+    <p>
+        email (data-messages) <input type="email" name="datamessages_email"
+                    data-message-type="[custom] This is not an email"
+                    data-message="Correct field" required />
+    </p>	
+    <p>
+        url (data-messages) <input type="url" name="datamessages_url"
+                    data-message-type="[custom] This is not an url"
+                    data-message-required="[custom] This field is mandatory"
+                    data-message="Correct field" required />
+    </p>	
 	<p>
 		url <input type="url" value="tipiirai@gmail.com" disabled />
 	</p>
@@ -67,7 +79,7 @@ $.tools.validator.fn("[type=range]", "Please supply a value between $1 and $2", 
 	
 });
 */
-var api = $("form").validator({attrPrefix: null, grouped: true}).bind("onBeforeValidate", function()  {
+var api = $("form").validator({attrPrefix: null, grouped: true}).attr('novalidate', 'novalidate').bind("onBeforeValidate", function()  {
 	console.info("BEFORE", this, arguments);
 	
 }).data("validator");

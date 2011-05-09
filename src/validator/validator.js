@@ -39,6 +39,17 @@
 			lang: 'en',						// default language for error messages 
 			message: '<div/>',
 			messageAttr: 'data-message', // name of the attribute for overridden error message
+
+			// Map of validation types to message attribute suffixes
+			messageAttrTypeSuffixes: {
+				'[pattern]': 'pattern',
+				'[min]': 'min',
+				'[max]': 'max',
+				'[required]': 'required',
+				':email': 'type',
+				':number': 'type',
+				':url': 'type'
+			},
 			messageClass: 'error',		// error message element's class name
 			offset: [0, 0], 
 			position: 'center right',
@@ -62,6 +73,31 @@
 		localizeFn: function(key, messages) {
 			v.messages[key] = v.messages[key] || {};
 			$.extend(v.messages[key], messages);
+		},
+
+		/**
+		 * Select a custom message for the given error function assignment.
+		 *
+		 * @param el Validated input field
+		 * @param fn Validation mapping with pattern and validator function
+		 * @param conf The global configuration object
+		 * @return message or undefined
+		 */
+		getCustomMessage: function(el, fn, conf) {
+			var msgPrefix = conf.messageAttr,
+				type = fn[0],
+				typeMsg,
+				typeMap = conf.messageAttrTypeSuffixes,
+				fallbackMsg = msgPrefix,
+				msg;
+
+			if (typeof typeMap[type] !== 'undefined') {
+				msg = el.attr(msgPrefix + '-' + typeMap[type]);
+			}
+			if (!msg) {
+				msg = el.attr(msgPrefix);
+			}
+			return msg;
 		},
 		
 		/** 
@@ -429,7 +465,7 @@
 								if (e.isDefaultPrevented()) { return false; }
 								
 								// overridden custom message
-								var msg = el.attr(conf.messageAttr);
+								var msg = v.getCustomMessage(el, fn, conf);
 								if (msg) { 
 									msgs = [msg];
 									return false;
