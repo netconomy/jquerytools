@@ -318,7 +318,7 @@
 	$.fn.tooltip = function(conf) {
 		
 		// return existing instance
-		var api = this.data("tooltip");
+		var api = this.data("jquerytools.tooltip");
 		if (api) { return api; }
 
 		conf = $.extend(true, {}, $.tools.tooltip.conf, conf);
@@ -331,7 +331,7 @@
 		// install tooltip for each entry in jQuery object
 		this.each(function() {
 			api = new Tooltip($(this), conf); 
-			$(this).data("tooltip", api); 
+			$(this).data("jquerytools.tooltip", api); 
 		});
 		
 		return conf.api ? api: this;		 
